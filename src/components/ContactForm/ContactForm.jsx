@@ -3,7 +3,7 @@ import * as Yup from "yup";
 import css from "./ContactForm.module.css";
 import { Field, Form, Formik, ErrorMessage } from "formik";
 import { useDispatch } from "react-redux";
-import { addContact } from "../../redux/contactsOps.js";
+import { addContact } from "../../redux/contacts/operations.js";
 
 const ContactSchema = Yup.object().shape({
   name: Yup.string()

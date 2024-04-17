@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import {
   selectContacts,
   selectFilteredContacts,
-} from "../../redux/selectors.js";
+} from "../../redux/contacts/selectors.js";
 
 import Contact from "../Contact/Contact.jsx";
 import Notification from "../Notification/Notification.jsx";
