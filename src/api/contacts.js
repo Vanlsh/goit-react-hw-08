@@ -14,3 +14,8 @@ export const createContact = async (contact) => {
   const data = await instance.post(`/contacts`, contact);
   return data;
 };
+
+export const updateContact = async (id, contact) => {
+  const data = await instance.post(`/contacts/${id}`, contact);
+  return data;
+};
