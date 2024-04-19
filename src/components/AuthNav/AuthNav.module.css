@@ -9,3 +9,7 @@
 .link.active {
   color: #e84a5f;
 }
+
+.tex {
+  flex-direction: column;
+}

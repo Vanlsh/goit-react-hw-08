@@ -1,31 +1,18 @@
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+
+import { selectIsLoggedIn } from "../../redux/auth/selectors";
+
 import { Navigation } from "../Navigation/Navigation";
 import { UserMenu } from "../UserMenu/UserMenu";
-import { useSelector } from "react-redux";
 import { AuthNav } from "../AuthNav/AuthNav";
-import { selectIsLoggedIn } from "../../redux/auth/selectors";
-import css from "./AppBar.module.css";
-import { NavLink as RouterLink } from "react-router-dom";
+import Burger from "../Burger/Burger";
 
-import {
-  Box,
-  Button,
-  Container,
-  AppBar as Header,
-  MenuItem,
-  Toolbar,
-  Typography,
-} from "@mui/material";
+import ImportContactsIcon from "@mui/icons-material/ImportContacts";
+import { Box, Container, AppBar as Header, Toolbar } from "@mui/material";
 
 export const AppBar = () => {
   const isLoggedIn = useSelector(selectIsLoggedIn);
-  if (false)
-    return (
-      <header className={css.header}>
-        <Navigation />
-        {isLoggedIn ? <UserMenu /> : <AuthNav />}
-      </header>
-    );
-
   return (
     <Header
       position="static"
@@ -38,44 +25,26 @@ export const AppBar = () => {
     >
       <Container maxWidth="lg">
         <Toolbar sx={toolbarStyles}>
-          <Box sx={{ display: { xs: "none", md: "flex" } }}>
-            <MenuItem sx={{ py: "6px", px: "12px" }}>
-              <Typography variant="body2" color="text.primary">
-                Pricing
-              </Typography>
-            </MenuItem>
-            <MenuItem sx={{ py: "6px", px: "12px" }}>
-              <Typography variant="body2" color="text.primary">
-                FAQ
-              </Typography>
-            </MenuItem>
+          <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
+            <Link to="/">
+              <ImportContactsIcon color="primary" />
+            </Link>
+            <Navigation
+              styles={{ display: { xs: "none", sm: "flex" }, ml: 1 }}
+            />
           </Box>
-          <Box
-            sx={{
-              display: { xs: "none", md: "flex" },
-              gap: 0.5,
-              alignItems: "center",
-            }}
-          >
-            <Button
-              color="primary"
-              variant="text"
-              size="small"
-              component={RouterLink}
-              to="/login"
-            >
-              Sign in
-            </Button>
-            <Button
-              color="primary"
-              variant="contained"
-              size="small"
-              component={RouterLink}
-              to="/register"
-            >
-              Sign up
-            </Button>
-          </Box>
+          {isLoggedIn ? (
+            <UserMenu styles={{ display: { xs: "none", md: "flex" } }} />
+          ) : (
+            <AuthNav
+              styles={{
+                display: { xs: "none", md: "flex" },
+                gap: 0.5,
+                alignItems: "center",
+              }}
+            />
+          )}
+          <Burger isLoggedIn={isLoggedIn} />
         </Toolbar>
       </Container>
     </Header>
@@ -87,7 +56,7 @@ const toolbarStyles = {
   alignItems: "center",
   justifyContent: "space-between",
   flexShrink: 0,
-  borderRadius: "999px",
+  borderRadius: "10px",
   bgcolor: "rgba(255, 255, 255, 0.4)",
   backdropFilter: "blur(24px)",
   maxHeight: 40,
