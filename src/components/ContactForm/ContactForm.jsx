@@ -1,9 +1,8 @@
-import { useId } from "react";
 import * as Yup from "yup";
-import css from "./ContactForm.module.css";
-import { Field, Form, Formik, ErrorMessage } from "formik";
+import { useFormik } from "formik";
 import { useDispatch } from "react-redux";
 import { addContact } from "../../redux/contacts/operations.js";
+import { Box, Button, FormHelperText, TextField } from "@mui/material";
 
 const ContactSchema = Yup.object().shape({
   name: Yup.string()
@@ -17,63 +16,67 @@ const ContactSchema = Yup.object().shape({
     .required("Required"),
 });
 
-const initialValue = { name: "", number: "" };
+const initialValues = { name: "", number: "" };
 
 const ContactForm = () => {
   const dispatch = useDispatch();
 
-  const nameFieldId = useId();
-  const numberFieldId = useId();
-
-  const handleSubmit = (values, actions) => {
-    dispatch(addContact({ ...values }));
-    actions.resetForm();
-  };
+  const formik = useFormik({
+    initialValues,
+    validationSchema: ContactSchema,
+    onSubmit: (values, action) => {
+      dispatch(addContact({ ...values }));
+      action.resetForm();
+    },
+  });
 
   return (
-    <Formik
-      initialValues={initialValue}
-      onSubmit={handleSubmit}
-      validationSchema={ContactSchema}
+    <Box
+      component="form"
+      onSubmit={formik.handleSubmit}
+      sx={{ mt: 2, width: "100%" }}
     >
-      <Form className={css.form}>
-        <div className={css.inputWrapper}>
-          <label className={css.label} htmlFor={nameFieldId}>
-            Name
-          </label>
-          <Field
-            className={css.textInput}
-            type="text"
-            name="name"
-            id={nameFieldId}
-          />
-          <ErrorMessage
-            className={css.errorNotification}
-            name="name"
-            component="span"
-          />
-        </div>
-        <div className={css.inputWrapper}>
-          <label className={css.label} htmlFor={numberFieldId}>
-            Number
-          </label>
-          <Field
-            className={css.textInput}
-            type="text"
-            name="number"
-            id={numberFieldId}
-          />
-          <ErrorMessage
-            className={css.errorNotification}
-            name="number"
-            component="span"
-          />
-        </div>
-        <button className={css.button} type="submit">
-          Add Contact
-        </button>
-      </Form>
-    </Formik>
+      <TextField
+        fullWidth
+        id="name"
+        name="name"
+        label="Name"
+        value={formik.values.name}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+        error={formik.touched.name && Boolean(formik.errors.name)}
+      />
+      <Box sx={{ minHeight: "25px", mt: "3px" }}>
+        {formik.touched.name && formik.errors.name && (
+          <FormHelperText error>{formik.errors.name} </FormHelperText>
+        )}
+      </Box>
+      <TextField
+        fullWidth
+        id="number"
+        name="number"
+        label="Number"
+        type="number"
+        value={formik.values.number}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+        error={formik.touched.number && Boolean(formik.errors.number)}
+      />
+      <Box sx={{ minHeight: "25px", mt: "3px" }}>
+        {formik.touched.number && formik.errors.number && (
+          <FormHelperText error>{formik.errors.number} </FormHelperText>
+        )}
+      </Box>
+      <Button
+        color="primary"
+        variant="contained"
+        sx={{ mt: 1, mb: 1 }}
+        fullWidth
+        type="submit"
+      >
+        Add contact
+      </Button>
+    </Box>
   );
 };
 

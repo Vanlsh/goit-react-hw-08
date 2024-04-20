@@ -15,20 +15,15 @@ const validationSchema = yup.object({
     .min(8, "Password should be of minimum 8 characters length")
     .required("Password is required"),
 });
-
+const initialValues = {
+  email: "iparan800@ukr.net",
+  password: "Qwert1234",
+};
 const LoginForm = () => {
   const dispatch = useDispatch();
 
-  const logInInfo = {
-    name: "Іван",
-    email: "iparan800@ukr.net",
-    password: "Qwert1234",
-  };
   const formik = useFormik({
-    initialValues: {
-      email: "",
-      password: "",
-    },
+    initialValues,
     validationSchema: validationSchema,
     onSubmit: (values, action) => {
       console.log(values);
