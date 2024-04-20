@@ -28,9 +28,7 @@ const RegisterForm = () => {
     },
     validationSchema: validationSchema,
     onSubmit: (values, action) => {
-      console.log(values);
       dispatch(register(values));
-      // alert(JSON.stringify(values, null, 2));
       action.resetForm();
     },
   });

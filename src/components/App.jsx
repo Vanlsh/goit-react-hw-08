@@ -8,13 +8,16 @@ import { refresh } from "../redux/auth/operations";
 import { Layout } from "./Layout";
 import PrivateRoute from "./PrivateRoute.jsx";
 import RestrictedRoute from "./RestrictedRoute.jsx";
-
+import Loader from "./Loader.jsx";
 const HomePage = lazy(() => import("../pages/HomePage/HomePage"));
 const RegisterPage = lazy(() =>
   import("../pages/RegistrationPage/RegistrationPage")
 );
 const LoginPage = lazy(() => import("../pages/LoginPage/LoginPage"));
 const ContactsPage = lazy(() => import("../pages/ContactsPage/ContactsPage"));
+const NotFoundPage = lazy(() =>
+  import("../pages/NotFoundPage/NotFoundPage.jsx")
+);
 
 function App() {
   const dispatch = useDispatch();
@@ -24,18 +27,18 @@ function App() {
     dispatch(refresh());
   }, [dispatch]);
 
-  if (isRefreshing) return <div>loading...</div>;
+  if (isRefreshing) return <Loader />;
 
   return (
     <Layout>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<Loader />}>
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route
             path="/register"
             element={
               <RestrictedRoute
-                redirectTo="/tasks"
+                redirectTo="/contacts"
                 component={<RegisterPage />}
               />
             }
@@ -43,15 +46,19 @@ function App() {
           <Route
             path="/login"
             element={
-              <RestrictedRoute redirectTo="/tasks" component={<LoginPage />} />
+              <RestrictedRoute
+                redirectTo="/contacts"
+                component={<LoginPage />}
+              />
             }
           />
           <Route
-            path="/tasks"
+            path="/contacts"
             element={
               <PrivateRoute redirectTo="/login" component={<ContactsPage />} />
             }
           />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Suspense>
     </Layout>
