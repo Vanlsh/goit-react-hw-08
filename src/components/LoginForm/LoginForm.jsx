@@ -1,6 +1,9 @@
 import { Box, Button, FormHelperText, TextField } from "@mui/material";
 import { useFormik } from "formik";
+import { useDispatch } from "react-redux";
 import * as yup from "yup";
+
+import { login } from "../../redux/auth/operations.js";
 
 const validationSchema = yup.object({
   email: yup
@@ -14,6 +17,13 @@ const validationSchema = yup.object({
 });
 
 const LoginForm = () => {
+  const dispatch = useDispatch();
+
+  const logInInfo = {
+    name: "Іван",
+    email: "iparan800@ukr.net",
+    password: "Qwert1234",
+  };
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -21,7 +31,8 @@ const LoginForm = () => {
     },
     validationSchema: validationSchema,
     onSubmit: (values, action) => {
-      alert(JSON.stringify(values, null, 2));
+      console.log(values);
+      dispatch(login(values));
       action.resetForm();
     },
   });

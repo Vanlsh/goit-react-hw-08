@@ -15,6 +15,6 @@ export const logOutUser = async (userInfo) => {
 };
 
 export const refreshUser = async () => {
-  const data = await instance.post("/users/current");
+  const data = await instance.get("/users/current");
   return data;
 };

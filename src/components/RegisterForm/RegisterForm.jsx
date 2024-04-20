@@ -1,6 +1,9 @@
 import { Box, Button, FormHelperText, TextField } from "@mui/material";
 import { useFormik } from "formik";
+import { useDispatch } from "react-redux";
 import * as yup from "yup";
+
+import { register } from "../../redux/auth/operations.js";
 
 const validationSchema = yup.object({
   name: yup.string("Enter your email").required("Email is required"),
@@ -15,6 +18,8 @@ const validationSchema = yup.object({
 });
 
 const RegisterForm = () => {
+  const dispatch = useDispatch();
+
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -23,7 +28,9 @@ const RegisterForm = () => {
     },
     validationSchema: validationSchema,
     onSubmit: (values, action) => {
-      alert(JSON.stringify(values, null, 2));
+      console.log(values);
+      dispatch(register(values));
+      // alert(JSON.stringify(values, null, 2));
       action.resetForm();
     },
   });
