@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import * as yup from "yup";
 
 import { register } from "../../redux/auth/operations.js";
+import { showError } from "../../toast.js";
 
 const validationSchema = yup.object({
   name: yup.string("Enter your email").required("Email is required"),
@@ -14,6 +15,10 @@ const validationSchema = yup.object({
   password: yup
     .string("Enter your password")
     .min(8, "Password should be of minimum 8 characters length")
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/,
+      "Must contain at least one uppercase, one lowercase, and one number"
+    )
     .required("Password is required"),
 });
 
@@ -28,7 +33,9 @@ const RegisterForm = () => {
     },
     validationSchema: validationSchema,
     onSubmit: (values, action) => {
-      dispatch(register(values));
+      dispatch(register(values))
+        .unwrap()
+        .catch(() => showError());
       action.resetForm();
     },
   });
@@ -42,7 +49,7 @@ const RegisterForm = () => {
         fullWidth
         id="name"
         name="name"
-        label="name"
+        label="Name"
         value={formik.values.name}
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}

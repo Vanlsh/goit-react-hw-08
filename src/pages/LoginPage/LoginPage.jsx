@@ -3,6 +3,7 @@ import { styled } from "@mui/system";
 import { Avatar, Box, Container, Typography } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import LoginForm from "../../components/LoginForm/LoginForm";
+import { Toaster } from "react-hot-toast";
 
 const StyledLink = styled(Link)(() => ({
   textDecoration: "underline",
@@ -33,6 +34,7 @@ const LoginPage = () => {
         <LoginForm />
         <StyledLink to="/register">I haven&apos;t had an account</StyledLink>
       </Box>
+      <Toaster />
     </Container>
   );
 };

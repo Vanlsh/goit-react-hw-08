@@ -1,8 +1,10 @@
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import { useDispatch } from "react-redux";
-import { addContact } from "../../redux/contacts/operations.js";
+import { addContact, updateContact } from "../../redux/contacts/operations.js";
 import { Box, Button, FormHelperText, TextField } from "@mui/material";
+import { useEffect } from "react";
+import { showSuccess, showError } from "../../toast.js";
 
 const ContactSchema = Yup.object().shape({
   name: Yup.string()
@@ -18,23 +20,43 @@ const ContactSchema = Yup.object().shape({
 
 const initialValues = { name: "", number: "" };
 
-const ContactForm = () => {
+const ContactForm = ({ editContact, handleEditContact, formRef }) => {
   const dispatch = useDispatch();
 
   const formik = useFormik({
-    initialValues,
+    initialValues: initialValues,
     validationSchema: ContactSchema,
     onSubmit: (values, action) => {
-      dispatch(addContact({ ...values }));
+      if (editContact) {
+        dispatch(updateContact({ id: editContact.id, ...values }))
+          .then(() => showSuccess("updated"))
+          .catch(() => showError());
+        handleEditContact(null);
+      } else {
+        dispatch(addContact({ ...values }))
+          .then(() => showSuccess("added"))
+          .catch(() => showError());
+      }
       action.resetForm();
     },
   });
 
+  useEffect(() => {
+    if (!editContact) return;
+    formik.resetForm();
+    formik.setFieldValue("name", editContact.name);
+    formik.setFieldValue("number", editContact.number);
+  }, [editContact]);
+
   return (
     <Box
+      ref={formRef}
       component="form"
       onSubmit={formik.handleSubmit}
-      sx={{ mt: 2, width: "100%" }}
+      sx={{
+        width: "100%",
+        maxWidth: "375px",
+      }}
     >
       <TextField
         fullWidth
@@ -67,15 +89,33 @@ const ContactForm = () => {
           <FormHelperText error>{formik.errors.number} </FormHelperText>
         )}
       </Box>
-      <Button
-        color="primary"
-        variant="contained"
-        sx={{ mt: 1, mb: 1 }}
-        fullWidth
-        type="submit"
-      >
-        Add contact
-      </Button>
+      <Box sx={{ display: "flex", gap: 1 }}>
+        {editContact && (
+          <Button
+            color="primary"
+            variant="contained"
+            sx={{ mt: 1, mb: 1 }}
+            fullWidth
+            type="button"
+            onClick={() => {
+              handleEditContact(null);
+              formik.resetForm();
+            }}
+          >
+            Cancel
+          </Button>
+        )}
+
+        <Button
+          color="primary"
+          variant="contained"
+          sx={{ mt: 1, mb: 1 }}
+          fullWidth
+          type="submit"
+        >
+          {editContact ? "Edit" : "Add contact"}
+        </Button>
+      </Box>
     </Box>
   );
 };

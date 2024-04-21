@@ -4,6 +4,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 
 import { Link } from "react-router-dom";
 import { styled } from "@mui/system";
+import { Toaster } from "react-hot-toast";
 
 const StyledLink = styled(Link)(() => ({
   textDecoration: "underline",
@@ -34,6 +35,7 @@ const RegistrationPage = () => {
         <RegisterForm />
         <StyledLink to="/login">I already have an account</StyledLink>
       </Box>
+      <Toaster />
     </Container>
   );
 };

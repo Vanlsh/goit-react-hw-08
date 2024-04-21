@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import * as yup from "yup";
 
 import { login } from "../../redux/auth/operations.js";
+import { showError } from "../../toast.js";
 
 const validationSchema = yup.object({
   email: yup
@@ -16,8 +17,8 @@ const validationSchema = yup.object({
     .required("Password is required"),
 });
 const initialValues = {
-  email: "iparan800@ukr.net",
-  password: "Qwert1234",
+  email: "",
+  password: "",
 };
 const LoginForm = () => {
   const dispatch = useDispatch();
@@ -26,9 +27,16 @@ const LoginForm = () => {
     initialValues,
     validationSchema: validationSchema,
     onSubmit: (values, action) => {
-      console.log(values);
-      dispatch(login(values));
-      action.resetForm();
+      dispatch(login(values))
+        .unwrap()
+        .then(() => {
+          console.log("reset");
+          action.resetForm();
+        })
+        .catch(() => {
+          console.log("error");
+          showError("Wrong password or email!");
+        });
     },
   });
   return (

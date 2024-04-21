@@ -47,7 +47,6 @@ export const refresh = createAsyncThunk("auth/refresh", async (_, thunkAPI) => {
   try {
     setAuthHeader(persistedToken);
     const { data } = await refreshUser();
-    console.log(data);
     return data;
   } catch (e) {
     return thunkAPI.rejectWithValue(e.message);

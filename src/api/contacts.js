@@ -16,6 +16,6 @@ export const createContact = async (contact) => {
 };
 
 export const updateContact = async (id, contact) => {
-  const data = await instance.post(`/contacts/${id}`, contact);
+  const data = await instance.patch(`/contacts/${id}`, contact);
   return data;
 };

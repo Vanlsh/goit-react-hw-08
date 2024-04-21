@@ -32,12 +32,12 @@ const authSlice = createSlice({
           email: null,
         };
         state.isLoggedIn = false;
+        state.token = null;
       })
       .addCase(refresh.pending, (state) => {
         state.isRefreshing = true;
       })
       .addCase(refresh.fulfilled, (state, action) => {
-        console.log(action.payload);
         state.user = action.payload;
         state.isLoggedIn = true;
         state.isRefreshing = false;

@@ -7,10 +7,9 @@ import {
 
 import Contact from "../Contact/Contact.jsx";
 import Notification from "../Notification/Notification.jsx";
+import { Grid } from "@mui/material";
 
-import css from "./ContactList.module.css";
-
-const ContactList = () => {
+const ContactList = ({ handleEditContact }) => {
   const contacts = useSelector(selectContacts);
 
   const filteredContacts = useSelector(selectFilteredContacts);
@@ -21,11 +20,18 @@ const ContactList = () => {
     return <Notification title={"Contacts are not found"} />;
 
   return (
-    <ul className={css.list}>
+    <Grid container spacing={2} sx={{ mt: 2 }}>
       {filteredContacts.map(({ id, name, number }) => (
-        <Contact key={id} id={id} name={name} number={number} />
+        <Grid item key={id} xs={12} alignItems="flex-start">
+          <Contact
+            id={id}
+            name={name}
+            number={number}
+            handleEditContact={handleEditContact}
+          />
+        </Grid>
       ))}
-    </ul>
+    </Grid>
   );
 };
 

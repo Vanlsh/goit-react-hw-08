@@ -1,4 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
+import { setContacts } from "../../redux/contacts/slice.js";
 import { logOut } from "../../redux/auth/operations.js";
 import { selectUser } from "../../redux/auth/selectors.js";
 
@@ -8,13 +9,13 @@ export const UserMenu = ({ styles, fullWidth = false }) => {
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
 
+  const handleLogOut = () => {
+    dispatch(logOut());
+    dispatch(setContacts([]));
+  };
   return (
     <Box sx={{ display: "flex", alignItems: "center", gap: 1, ...styles }}>
-      <Button
-        fullWidth={fullWidth}
-        type="button"
-        onClick={() => dispatch(logOut())}
-      >
+      <Button fullWidth={fullWidth} type="button" onClick={handleLogOut}>
         Logout
       </Button>
       <Box
