@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 
 import { Box, Button } from "@mui/material";
 
@@ -15,7 +15,7 @@ export const AuthNav = ({ fullWidth = false, styles = {} }) => {
         color="primary"
         variant={isLoginActive ? "contained" : "text"}
         size="small"
-        component={Link}
+        component={NavLink}
         to="/login"
       >
         Sign in
@@ -25,7 +25,7 @@ export const AuthNav = ({ fullWidth = false, styles = {} }) => {
         color="primary"
         variant={isRegisterActive ? "contained" : "text"}
         size="small"
-        component={Link}
+        component={NavLink}
         to="/register"
       >
         Sign up

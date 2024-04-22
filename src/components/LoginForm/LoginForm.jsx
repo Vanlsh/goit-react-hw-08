@@ -30,11 +30,9 @@ const LoginForm = () => {
       dispatch(login(values))
         .unwrap()
         .then(() => {
-          console.log("reset");
           action.resetForm();
         })
         .catch(() => {
-          console.log("error");
           showError("Wrong password or email!");
         });
     },
@@ -50,6 +48,7 @@ const LoginForm = () => {
         id="email"
         name="email"
         label="Email"
+        autoComplete="username"
         value={formik.values.email}
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}
@@ -66,6 +65,7 @@ const LoginForm = () => {
         name="password"
         label="Password"
         type="password"
+        autoComplete="current-password"
         value={formik.values.password}
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}

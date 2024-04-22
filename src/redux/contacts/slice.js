@@ -5,7 +5,7 @@ import {
   addContact,
   updateContact,
 } from "./operations.js";
-
+import { logOut } from "../auth/operations.js";
 const handlePending = (state) => {
   state.loading = true;
 };
@@ -21,11 +21,6 @@ const contactsSlice = createSlice({
     items: [],
     loading: false,
     error: null,
-  },
-  reducers: {
-    setContacts(state, action) {
-      state.items = action.payload;
-    },
   },
   extraReducers: (builder) => {
     builder
@@ -61,9 +56,13 @@ const contactsSlice = createSlice({
         );
         state.items[index] = action.payload;
       })
-      .addCase(updateContact.rejected, handleRejected);
+      .addCase(updateContact.rejected, handleRejected)
+      .addCase(logOut.fulfilled, (state) => {
+        state.error = null;
+        state.loading = false;
+        state.items = [];
+      });
   },
 });
 
-export const { setContacts } = contactsSlice.actions;
 export const contactsReducer = contactsSlice.reducer;

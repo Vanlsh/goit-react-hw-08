@@ -65,6 +65,7 @@ const RegisterForm = () => {
         id="email"
         name="email"
         label="Email"
+        autoComplete="username"
         value={formik.values.email}
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}
@@ -81,6 +82,7 @@ const RegisterForm = () => {
         name="password"
         label="Password"
         type="password"
+        autoComplete="current-password"
         value={formik.values.password}
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}
