@@ -78,7 +78,7 @@ const ContactForm = ({ editContact, handleEditContact, formRef }) => {
         id="number"
         name="number"
         label="Number"
-        type="number"
+        type="text"
         value={formik.values.number}
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}
